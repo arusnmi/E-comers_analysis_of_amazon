@@ -1,40 +1,66 @@
+
 import pandas as pd
-from langdetect import detect, DetectorFactory
-from langdetect.lang_detect_exception import LangDetectException
+import re
 
+# === Load ===
+df = pd.read_csv("amazon_discounts.csv")
 
-# Load CSV
-df = pd.read_csv('amazon_fixed_ratings.csv')
+review_cols = ["user_id", "user_name", "review_id", "review_title", "review_content"]
 
+# --- Split into lists (simple comma split) ---
+def split_list(s):
+    if pd.isna(s):
+        return []
+    # split and strip surrounding spaces
+    return [part.strip() for part in str(s).split(',')]
 
-# Split the user_name and user_id columns by commas
-df['user_name'] = df['user_name'].str.split(',')
-df['user_id'] = df['user_id'].str.split(',')
-df['review_id'] = df['review_id'].str.split(',')
-df['review_title'] = df['review_title'].str.split(',')
-df['review_content'] = df['review_content'].str.split(',')
-# Explode both columns so each element becomes its own row
-cols_to_explode = ["user_id", "user_name", "review_id", "review_title", "review_content"]
-df[cols_to_explode] = df[cols_to_explode].apply(lambda x: x.str.split(','))
-df = df.explode(cols_to_explode)
+for c in review_cols:
+    df[c] = df[c].map(split_list)
 
+# --- Truncate to the shortest length per row so lists stay aligned ---
+def truncate_row(row):
+    lengths = [len(row[c]) for c in review_cols]
+    m = min(lengths) if lengths else 0
+    if m == 0:
+        # nothing usable in this row
+        for c in review_cols:
+            row[c] = []
+        return row
+    for c in review_cols:
+        row[c] = row[c][:m]
+    return row
 
-# Reset index for cleanliness
-df = df.reset_index(drop=True)
+df = df.apply(truncate_row, axis=1)
 
+# Drop rows where no reviews remain
+df = df[df[review_cols].applymap(len).sum(axis=1) > 0]
 
-   
+# --- Explode all review columns together (prevents cartesian blow-up) ---
+df = df.explode(review_cols, ignore_index=True)
 
+# --- Remove corrupted/mojibake-looking entries ---
+# Heuristics that catch typical UTF-8→Latin-1 mojibake like: Ã, Â, â, à¤, à¥, â€…
+_SUSPECT_SEQS = [
+    'Ã', 'Â', 'â',        # common crossover bytes
+    'à¤', 'à¥',           # Devanagari bytes seen as Latin-1 (matches your example)
+    'œ', 'ž', '™', '€'    # often appear in mojibake clusters
+]
+_MOJIBAKE_RE = re.compile(r'(?:Ã.|Â.|â.|à[¤¥¦§¨¯±]){2,}')
 
-DetectorFactory.seed = 0
-def detect_language(text):
-    try:
-        return detect(str(text)) if pd.notnull(text) else "unknown"
-    except LangDetectException:
-        return "unknown"
+def looks_mojibake(text: str) -> bool:
+    if pd.isna(text):
+        return False
+    t = str(text)
+    # count hits of suspicious sequences
+    hits = sum(t.count(seq) for seq in _SUSPECT_SEQS)
+    # also catch repeating patterns like "à¤" / "â€"
+    if _MOJIBAKE_RE.search(t):
+        hits += 2
+    # require more than one hit to avoid false positives; emojis and | / \ are fine
+    return hits >= 2
 
-df = df[df["review_title"].apply(detect_language) == "en"]
-df = df[df["review_content"].apply(detect_language) == "en"]
+mask_bad = df["review_title"].map(looks_mojibake) | df["review_content"].map(looks_mojibake)
+df_clean = df[~mask_bad].copy()
 
-
-df.to_csv('amazon_fixed_ratings_cleaned.csv', index=False)
+df_clean.to_csv("amazon_discounts_cleaned.csv", index=False)
+print("Saved amazon_discounts_cleaned.csv with", len(df_clean), "rows")
