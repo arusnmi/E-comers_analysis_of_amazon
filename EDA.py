@@ -16,5 +16,5 @@ plt.xlabel('Ratings')
 plt.title('Ratings vs Discount Percentage')
 plt.xticks(rotation=45)
 plt.tight_layout()
-plt.show()
+
 plt.savefig('ratings_vs_discount_percentage.png')
