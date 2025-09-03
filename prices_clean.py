@@ -23,5 +23,6 @@ df["discounted_price"] = df["discount_price_number"]
 df["actual_price"] = df["actual_price_number"]
 
 df.dropna()
-
+print(df.info())
+print (df[df["review_content"].isna()].head())
 df.to_csv("amazon_price_cleaned.csv", index=False)
