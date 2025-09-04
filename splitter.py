@@ -22,5 +22,6 @@ df=pd.read_csv('amazon_price_cleaned.csv')
 
 df["category"]=df["category"].str.split('|')
 
-df=df.explode('category')
+df["first_category"]=df["category"].str[0]
+df["last_category"]=df["category"].str[-1]
 df.to_csv('amazon_cleaned_preped.csv', index=False)

@@ -37,20 +37,36 @@ print(df.info())
 
 
 
-#category price distrubition 
 
-categories = df['category'].unique()
+
+
+
+
+# Plot for first level categories
 plt.figure(figsize=(12, 8))
-for category in categories:
-    category_data = df[df['category'] == category]
+for category in df['first_category'].unique():
+    category_data = df[df['first_category'] == category]
     plt.hist(category_data['discount_price_number'], bins=30, alpha=0.5, label=category)
 plt.ylabel('Frequency')
 plt.xlabel('Discounted Price')
-plt.title('Discounted Price Distribution by Category')
-plt.legend()
-plt.savefig('category_price_distribution.png')
+plt.title('Discounted Price Distribution by Main Category')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.savefig('main_category_price_distribution.png')
 plt.show()
 
+# Plot for last level categories
+plt.figure(figsize=(12, 8))
+for category in df['last_category'].unique():
+    category_data = df[df['last_category'] == category]
+    plt.hist(category_data['discount_price_number'], bins=30, alpha=0.5, label=category)
+plt.ylabel('Frequency')
+plt.xlabel('Discounted Price')
+plt.title('Discounted Price Distribution by Sub Category')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.tight_layout()
+plt.savefig('sub_category_price_distribution.png')
+plt.show()
 
 
 
