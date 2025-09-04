@@ -4,23 +4,23 @@ import seaborn as sns
 
 
 
-df = pd.read_csv('amazon_cleaned_preped.csv')
-print(df.info())
+df = pd.read_csv('amazon_cleaned_preped_split.csv')
+# print(df.info())
 
 
 
 # #ratings vs discount percentage
 
 
-plt.figure(figsize=(10, 6))
-sns.barplot(x='rating', y='discount_percentage_number', data=df)
-plt.ylabel('Discount Percentage')
-plt.xlabel('Ratings')
-plt.title('Average Discount Percentage by Rating')
-plt.xticks(rotation=45)
+# plt.figure(figsize=(10, 6))
+# sns.barplot(x='rating', y='discount_percentage_number', data=df)
+# plt.ylabel('Discount Percentage')
+# plt.xlabel('Ratings')
+# plt.title('Average Discount Percentage by Rating')
+# plt.xticks(rotation=45)
 
-plt.savefig('ratings_vs_discount_percentage.png')
-plt.show()
+# plt.savefig('ratings_vs_discount_percentage.png')
+# plt.show()
 
 
 
@@ -108,15 +108,48 @@ plt.show()
 
 
 
+#RATING AVRAGE VS COUNT
+
+# plt.figure(figsize=(10, 6))
+
+# rating=df["rating"]
+# rating_count=df["rating_count"]
+# sns.barplot(x=rating, y=rating_count, data=df)
+# plt.ylabel('Average Rating Count')
+# plt.xlabel('Rating')
+# plt.title('Average Rating Count by Rating')
+# plt.xticks(rotation=45)
+# plt.tight_layout()
+# plt.savefig('rating_count_by_average_rating.png')
+# plt.show()
 
 
+#Pie chart for diffent prouducts over catgroies 
 
 
+# category_counts_first = df['first_category'].value_counts()
+# catgroy_counts_last = df['last_category'].value_counts()
+# prouduct_id=df['product_id'].unique()
+# # Pie chart for first category
+# plt.figure(figsize=(10, 8))
+# plt.pie(category_counts_first, labels=category_counts_first.index, autopct='%1.1f%%', startangle=140)
+# plt.title('Product Distribution by Main Category')
+# plt.savefig('product_distribution_main_category.png')
+# plt.show()
+# # Pie chart for last category
+# plt.figure(figsize=(10, 8))
+# plt.pie(catgroy_counts_last, labels=catgroy_counts_last.index, autopct='%1.1f%%', startangle=140)
+# plt.title('Product Distribution by Sub Category')
+# plt.savefig('product_distribution_sub_category.png')
+# plt.show()
 
 
+#heatmap for corrlating discount price, actual price, rating , rsating count , catgrories
 
-
-
-
-
+plt.figure(figsize=(10, 8))
+correlation_matrix = df[['actual_price_number', 'discount_price_number', 'discount_percentage_number', 'rating', 'rating_count']].corr()
+sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix')
+plt.savefig('correlation_matrix.png')
+plt.show()
 
