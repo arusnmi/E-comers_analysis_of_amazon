@@ -146,10 +146,10 @@ df = pd.read_csv('amazon_cleaned_preped_split.csv')
 
 #heatmap for corrlating discount price, actual price, rating , rsating count , catgrories
 
-plt.figure(figsize=(10, 8))
-correlation_matrix = df[['actual_price_number', 'discount_price_number', 'discount_percentage_number', 'rating', 'rating_count']].corr()
-sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
-plt.title('Correlation Matrix')
-plt.savefig('correlation_matrix.png')
-plt.show()
+# plt.figure(figsize=(10, 8))
+# correlation_matrix = df[['actual_price_number', 'discount_price_number', 'discount_percentage_number', 'rating', 'rating_count']].corr()
+# sns.heatmap(correlation_matrix, annot=True, cmap='coolwarm', fmt=".2f")
+# plt.title('Correlation Matrix')
+# plt.savefig('correlation_matrix.png')
+# plt.show()
 
