@@ -4,3 +4,4 @@ matplotlib
 langdetect
 seaborn
 re
+skit-learn
