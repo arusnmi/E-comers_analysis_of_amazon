@@ -1,151 +1,138 @@
 import streamlit as st
-import pandas as pd
-import math
 from pathlib import Path
 
-# Set the title and favicon that appear in the Browser's tab bar.
+# Page configuration
 st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
+    page_title='E-commerce Analytics Dashboard',
+    page_icon='📊',
+    layout='wide'
 )
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+# Title and introduction
+st.title('📊 E-commerce Analytics Dashboard')
+st.markdown("""
+This dashboard presents various insights from our e-commerce data analysis including:
+- Price distributions
+- Category analysis
+- Rating patterns
+- Clustering analysis
+""")
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+# Sidebar for navigation
+analysis_type = st.sidebar.selectbox(
+    "Choose Analysis Type",
+    ["Price Analysis", "Category Analysis", "Ratings Analysis", "Clustering Analysis"]
+)
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+# Function to get image path
+def get_image_path(image_name):
+    base_path = Path(__file__).parent / 'Images'
+    return str(base_path / image_name)
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+if analysis_type == "Price Analysis":
+    st.header("Price Distribution Analysis")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.image(get_image_path("price_distribution.png"), 
+                caption="Overall Price Distribution",
+                use_column_width=True)
+        
+    with col2:
+        st.image(get_image_path("correlation_matrix.png"), 
+                caption="Correlation Matrix",
+                use_column_width=True)
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
-
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
+elif analysis_type == "Category Analysis":
+    st.header("Category-Based Analysis")
+    
+    view_option = st.radio(
+        "Select View",
+        ["Category Distribution", "Price Distribution", "3D Analysis"]
     )
+    
+    if view_option == "Category Distribution":
+        st.image(get_image_path("product_distribution_main_category.png"),
+                caption="Product Distribution by Main Category",
+                use_column_width=True)
+    
+    elif view_option == "Price Distribution":
+        col1, col2 = st.columns(2)
+        with col1:
+            st.image(get_image_path("category_price_distribution.png"),
+                    caption="Price Distribution by Category",
+                    use_column_width=True)
+        with col2:
+            st.image(get_image_path("main_category_price_distribution.png"),
+                    caption="Price Distribution by Main Category",
+                    use_column_width=True)
+    
+    else:
+        st.image(get_image_path("main_category_3d_scatter.png"),
+                caption="3D Scatter Plot by Main Category",
+                use_column_width=True)
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+elif analysis_type == "Ratings Analysis":
+    st.header("Ratings Analysis")
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.image(get_image_path("rating_count_by_average_rating.png"),
+                caption="Rating Count Distribution",
+                use_column_width=True)
+    
+    with col2:
+        st.image(get_image_path("ratings_vs_discount_percentage.png"),
+                caption="Ratings vs Discount Percentage",
+                use_column_width=True)
 
-    return gdp_df
+else:  # Clustering Analysis
+    st.header("KMeans Clustering Analysis")
+    
+    cluster_option = st.selectbox(
+        "Select Clustering View",
+        ["Cluster Set 1", "Cluster Set 2", "Cluster Set 3"]
+    )
+    
+    col1, col2 = st.columns(2)
+    
+    if cluster_option == "Cluster Set 1":
+        with col1:
+            st.image(get_image_path("Kmeans/3d_clusters_kmeans_1.png"),
+                    caption="3D Clusters - Set 1",
+                    use_column_width=True)
+        with col2:
+            st.image(get_image_path("Kmeans/elbow_method_kmeans_1.png"),
+                    caption="Elbow Method - Set 1",
+                    use_column_width=True)
+    
+    elif cluster_option == "Cluster Set 2":
+        with col1:
+            st.image(get_image_path("Kmeans/3d_clusters_kmeans_2.png"),
+                    caption="3D Clusters - Set 2",
+                    use_column_width=True)
+        with col2:
+            st.image(get_image_path("Kmeans/elbow_method_kmeans_2.png"),
+                    caption="Elbow Method - Set 2",
+                    use_column_width=True)
+    
+    else:
+        with col1:
+            st.image(get_image_path("Kmeans/3d_clusters_kmeans_3.png"),
+                    caption="3D Clusters - Set 3",
+                    use_column_width=True)
+        with col2:
+            st.image(get_image_path("Kmeans/elbow_method_kmeans_3.png"),
+                    caption="Elbow Method - Set 3",
+                    use_column_width=True)
 
-gdp_df = get_gdp_data()
-
-# -----------------------------------------------------------------------------
-# Draw the actual page
-
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
-
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
-
-
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
-
-st.header(f'GDP in {to_year}', divider='gray')
-
-''
-
-cols = st.columns(4)
-
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
-
-    with col:
-        first_gdp = first_year[first_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[last_year['Country Code'] == country]['GDP'].iat[0] / 1000000000
-
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )
+# Add footer
+st.markdown("---")
+st.markdown("### 📝 Note")
+st.markdown("""
+This dashboard visualizes various aspects of our e-commerce dataset including price distributions,
+category analysis, rating patterns, and clustering results. Use the sidebar to navigate between
+different types of analysis.
+""")
