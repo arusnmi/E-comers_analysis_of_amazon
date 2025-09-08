@@ -5,3 +5,4 @@ langdetect
 seaborn
 re
 skit-learn
+pathlib
