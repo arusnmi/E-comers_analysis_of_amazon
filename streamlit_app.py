@@ -33,18 +33,17 @@ if section == "Category Overview":
     st.image(get_image_path("product_distribution_main_category.png"))
     st.markdown("""
     **Key Insights:**
-    - Electronics dominates with 35.5% of products
+    - The one with the most products is Electronics at 34.5%
     - Computers & Accessories follows at 31.3%
     - Home & Kitchen represents 30.6%
-    - Other categories make up small portions
+    - Other categories make up small portions as they are not bought as frequently
+    - The distribution is fairly balanced among the top three categories
     """)
     
     # Category price distributions
     st.subheader("Price Distribution by Categories")
     col1, col2 = st.columns(2)
     with col1:
-        st.image(get_image_path("category_price_distribution.png"))
-    with col2:
         st.image(get_image_path("main_category_price_distribution.png"))
 
 elif section == "Price Analysis":
@@ -55,9 +54,8 @@ elif section == "Price Analysis":
     st.image(get_image_path("price_distribution.png"))
     st.markdown("""
     **Price Distribution Insights:**
-    - Most products are concentrated in lower price ranges
+    - Most products are concentrated in the price range of 0- 200 dollars
     - Few products have very high prices
-    - Clear right-skewed distribution
     """)
     
     # Correlation matrix
@@ -66,7 +64,7 @@ elif section == "Price Analysis":
     st.markdown("""
     **Correlation Insights:**
     - Strong correlation (0.96) between actual and discounted prices
-    - Weak correlation between price and ratings
+    - Weak correlation (0.12) between price and ratings
     - Minimal correlation between discount percentage and other features
     """)
 
@@ -82,7 +80,7 @@ elif section == "Rating Analysis":
         **Rating Distribution Insights:**
         - Most products have ratings between 3.8-4.5
         - Peak rating count around 4.0-4.2
-        - Few products with very low ratings
+        - Few products with rating below 3.5
         """)
     
     with col2:
@@ -93,6 +91,8 @@ elif section == "Rating Analysis":
         - No strong correlation between ratings and discounts
         - Discounts range from 0-80%
         - Most products maintain good ratings regardless of discount
+        - Ratings are more influenced by product quality than price cuts
+        - Price cuts happen to lower rated prouducts shown with most prouducts under a 3 rating having a higher discount percentage
         """)
 
 else:  # Clustering Insights
@@ -100,7 +100,7 @@ else:  # Clustering Insights
     
     cluster_view = st.selectbox(
         "Select Clustering Perspective",
-        ["Price-Rating Clusters", "Category Clusters", "Review Clusters"]
+        ["Price-Rating Clusters", "Category Clusters"]
     )
     
     col1, col2 = st.columns(2)
@@ -112,11 +112,15 @@ else:  # Clustering Insights
             st.image(get_image_path("elbow_method_kmeans_1.png"))
             st.markdown("""
             **Cluster Analysis 1:**
-            - Optimal number of clusters: 4-5
-            - Clear segmentation based on price ranges
-            - Rating patterns visible in clusters
+            - Optimal number of clusters: 4
             """)
-            
+        st.markdown("""
+        **Overall Clustering Insights:**
+        - Cluster 1 (green): Very high feqrency, moderate price, reletvaly high ratings. These people are buying prouducts frequently and are with low cost
+        - Cluster 2 (red): Low feqruency, low monatery value, high ratings. These people usualy bought one of things and are happy with them. 
+        - Cluster 3 (purple): Low feqruency, low monatery value, bad ratings. Thes people hav bought one of things and are not happy with the quality of purchas.
+        - Cluster 4 (blue): Modrate feqruency, high monatery value, high ratings. Theese people are buying expensive things and are happy with them.
+        """)            
     elif cluster_view == "Category Clusters":
         with col1:
             st.image(get_image_path("3d_clusters_kmeans_2.png"))
@@ -124,22 +128,16 @@ else:  # Clustering Insights
             st.image(get_image_path("elbow_method_kmeans_2.png"))
             st.markdown("""
             **Cluster Analysis 2:**
-            - Category-based segmentation
-            - Price variation within categories
-            - Distinct product groupings
+            - optmial amount of clusters: 4
             """)
-    
-    else:
-        with col1:
-            st.image(get_image_path("3d_clusters_kmeans_3.png"))
-        with col2:
-            st.image(get_image_path("elbow_method_kmeans_3.png"))
-            st.markdown("""
-            **Cluster Analysis 3:**
-            - Review-based clustering
-            - Rating frequency patterns
-            - Customer behavior segments
-            """)
+        st.markdown("""
+        **Overall Clustering Insights:**
+        - Cluster 1 (green): Relativly large discount percantage, low review count, reletvaly high ratings. These prouducts are the ones going for a bargin and are at a lower cost tha what they should be.
+        - Cluster 2 (red): Small discount percantages, low review count, high ratings. These prouducts are the prouducts that are priced correctly, and are of good quality.
+        - Cluster 3 (purple): Small discount, low review count, bad ratings. These ar ethe prouducts which are of low quality.
+        - Cluster 4 (blue): Low discount, high review count , high ratings. these prouducts are very poupular, of good quality, and have good ratings.
+        """)  
+
 
 # Footer
 st.markdown("---")
