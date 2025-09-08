@@ -10,7 +10,7 @@ def get_image_path(image_name):
     return str(base_path / image_name)
 
 # Title and introduction
-st.title("E-commerce Data Analysis Dashboard")
+st.title("E-commerce Data Analysis Of amazon")
 st.markdown("""
 This dashboard provides comprehensive insights into our e-commerce dataset, analyzing:
 - Product Categories and Distributions
