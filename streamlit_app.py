@@ -82,11 +82,11 @@ if section == "Product Analysis":
         - optmial amount of clusters: 4
         """)
     st.markdown("""
-    **Overall Clustering Insights:**
-    - Cluster 1 (green): Relativly large discount percantage, low review count, reletvaly high ratings. These prouducts are the ones going for a bargin and are at a lower cost tha what they should be.
-    - Cluster 2 (red): Small discount percantages, low review count, high ratings. These prouducts are the prouducts that are priced correctly, and are of good quality.
-    - Cluster 3 (purple): Small discount, low review count, bad ratings. These ar ethe prouducts which are of low quality.
-    - Cluster 4 (blue): Low discount, high review count , high ratings. these prouducts are very poupular, of good quality, and have good ratings.
+    **Overall Clustering analysis and Insights:**
+    - Cluster 1 (green): Relativly large discount percantage, low review count, reletvaly high ratings. These prouducts are the ones going for a bargin and are at a lower cost tha what they should be. These prouducts should be in ads more often so that they are bought more fequrency.
+    - Cluster 2 (red): Small discount percantages, low review count, high ratings. These prouducts are the prouducts that are priced correctly, and are of good quality. These prouducts should have deals on them to make them more pouplar.
+    - Cluster 3 (purple): Small discount, low review count, bad ratings. These ar ethe prouducts which are of low quality. These prouducts should not be recomended to coustomers. 
+    - Cluster 4 (blue): Low discount, high review count , high ratings. these prouducts are very poupular, of good quality, and have good ratings. These prouducts should be paired with each other to gain more sales.
     """)
 
 else:  # Customer Analysis
@@ -129,11 +129,11 @@ else:  # Customer Analysis
         - Optimal number of clusters: 4
         """)
     st.markdown("""
-    **Overall Clustering Insights:**
-    - Cluster 1 (green): Very high feqrency, moderate price, reletvaly high ratings. These people are buying prouducts frequently and are with low cost
-    - Cluster 2 (red): Low feqruency, low monatery value, high ratings. These people usualy bought one of things and are happy with them. 
-    - Cluster 3 (purple): Low feqruency, low monatery value, bad ratings. Thes people hav bought one of things and are not happy with the quality of purchas.
-    - Cluster 4 (blue): Modrate feqruency, high monatery value, high ratings. Theese people are buying expensive things and are happy with them.
+    **Overall Clustering analysis and Insightsfor coustomer behavior:**
+    - Cluster 1 (green): Very high feqrency, moderate price, reletvaly high ratings. These people are buying prouducts frequently and are with low cost. These people should have loyality programs to make them buy more expensive things. 
+    - Cluster 2 (red): Low feqruency, low monatery value, high ratings. These people usualy bought one of things and are happy with them. My insights is that these people should be targeted with ads of cheaper things to make them buy more often.   
+    - Cluster 3 (purple): Low feqruency, low monatery value, bad ratings. Thes people hav bought one of things and are not happy with the quality of purchas.These people should be targeted with ads of Bigger brands for better quality. 
+    - Cluster 4 (blue): Modrate feqruency, high monatery value, high ratings. Theese people are buying expensive things and are happy with them. These people should be targeted with loyalitiy programs to make them buy more often.
     """)
 
 # Footer
