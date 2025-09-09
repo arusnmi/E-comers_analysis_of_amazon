@@ -22,55 +22,76 @@ This dashboard provides comprehensive insights into our e-commerce dataset, anal
 # Sidebar navigation
 section = st.sidebar.radio(
     "Choose Analysis Section",
-    ["Category Overview", "Price Analysis", "Rating Analysis", "Clustering Insights"]
+    ["Product Analysis", "Customer Analysis"]
 )
 
-if section == "Category Overview":
+if section == "Product Analysis":
+    # Category Overview
     st.header("Product Category Analysis")
-    
-    # Main category distribution
-    st.subheader("Product Distribution by Main Category")
-    st.image(get_image_path("product_distribution_main_category.png"))
-    st.markdown("""
-    **Key Insights:**
-    - The one with the most products is Electronics at 34.5%
-    - Computers & Accessories follows at 31.3%
-    - Home & Kitchen represents 30.6%
-    - Other categories make up small portions as they are not bought as frequently
-    - The distribution is fairly balanced among the top three categories
-    """)
-    
-    # Category price distributions
-    st.subheader("Price Distribution by Categories")
     col1, col2 = st.columns(2)
+    
     with col1:
+        st.subheader("Product Distribution by Main Category")
+        st.image(get_image_path("product_distribution_main_category.png"))
+        st.markdown("""
+        **Key Insights:**
+        - The one with the most products is Electronics at 34.5%
+        - Computers & Accessories follows at 31.3%
+        - Home & Kitchen represents 30.6%
+        - Other categories make up small portions as they are not bought as frequently
+        - The distribution is fairly balanced among the top three categories
+        """)
+    
+    with col2:
+        st.subheader("Price Distribution by Categories")
         st.image(get_image_path("main_category_price_distribution.png"))
 
-elif section == "Price Analysis":
+    # Price Analysis
     st.header("Price Analysis")
+    col3, col4 = st.columns(2)
     
-    # Overall price distribution
-    st.subheader("Overall Price Distribution")
-    st.image(get_image_path("price_distribution.png"))
-    st.markdown("""
-    **Price Distribution Insights:**
-    - Most products are concentrated in the price range of 0- 200 dollars
-    - Few products have very high prices
-    """)
+    with col3:
+        st.subheader("Overall Price Distribution")
+        st.image(get_image_path("price_distribution.png"))
+        st.markdown("""
+        **Price Distribution Insights:**
+        - Most products are concentrated in the price range of 0- 200 dollars
+        - Few products have very high prices
+        """)
     
-    # Correlation matrix
-    st.subheader("Feature Correlations")
-    st.image(get_image_path("correlation_matrix.png"))
+    with col4:
+        st.subheader("Feature Correlations")
+        st.image(get_image_path("correlation_matrix.png"))
+        st.markdown("""
+        **Correlation Insights:**
+        - Strong correlation (0.96) between actual and discounted prices
+        - Weak correlation (0.12) between price and ratings
+        - Minimal correlation between discount percentage and other features
+        """)
+
+    # Category Clusters
+    st.header("Category Clustering Analysis")
+    col5, col6 = st.columns(2)
+    
+    with col5:
+        st.image(get_image_path("3d_clusters_kmeans_2.png"))
+    with col6:
+        st.image(get_image_path("elbow_method_kmeans_2.png"))
+        st.markdown("""
+        **Cluster Analysis 2:**
+        - optmial amount of clusters: 4
+        """)
     st.markdown("""
-    **Correlation Insights:**
-    - Strong correlation (0.96) between actual and discounted prices
-    - Weak correlation (0.12) between price and ratings
-    - Minimal correlation between discount percentage and other features
+    **Overall Clustering Insights:**
+    - Cluster 1 (green): Relativly large discount percantage, low review count, reletvaly high ratings. These prouducts are the ones going for a bargin and are at a lower cost tha what they should be.
+    - Cluster 2 (red): Small discount percantages, low review count, high ratings. These prouducts are the prouducts that are priced correctly, and are of good quality.
+    - Cluster 3 (purple): Small discount, low review count, bad ratings. These ar ethe prouducts which are of low quality.
+    - Cluster 4 (blue): Low discount, high review count , high ratings. these prouducts are very poupular, of good quality, and have good ratings.
     """)
 
-elif section == "Rating Analysis":
+else:  # Customer Analysis
+    # Rating Analysis
     st.header("Customer Ratings Analysis")
-    
     col1, col2 = st.columns(2)
     
     with col1:
@@ -95,49 +116,25 @@ elif section == "Rating Analysis":
         - Price cuts happen to lower rated prouducts shown with most prouducts under a 3 rating having a higher discount percentage
         """)
 
-else:  # Clustering Insights
-    st.header("K-Means Clustering Analysis")
+    # Rating Clusters
+    st.header("Customer Behavior Clustering")
+    col3, col4 = st.columns(2)
     
-    cluster_view = st.selectbox(
-        "Select Clustering Perspective",
-        ["Price-Rating Clusters", "Category Clusters"]
-    )
-    
-    col1, col2 = st.columns(2)
-    
-    if cluster_view == "Price-Rating Clusters":
-        with col1:
-            st.image(get_image_path("3d_clusters_kmeans_1.png"))
-        with col2:
-            st.image(get_image_path("elbow_method_kmeans_1.png"))
-            st.markdown("""
-            **Cluster Analysis 1:**
-            - Optimal number of clusters: 4
-            """)
+    with col3:
+        st.image(get_image_path("3d_clusters_kmeans_1.png"))
+    with col4:
+        st.image(get_image_path("elbow_method_kmeans_1.png"))
         st.markdown("""
-        **Overall Clustering Insights:**
-        - Cluster 1 (green): Very high feqrency, moderate price, reletvaly high ratings. These people are buying prouducts frequently and are with low cost
-        - Cluster 2 (red): Low feqruency, low monatery value, high ratings. These people usualy bought one of things and are happy with them. 
-        - Cluster 3 (purple): Low feqruency, low monatery value, bad ratings. Thes people hav bought one of things and are not happy with the quality of purchas.
-        - Cluster 4 (blue): Modrate feqruency, high monatery value, high ratings. Theese people are buying expensive things and are happy with them.
-        """)            
-    elif cluster_view == "Category Clusters":
-        with col1:
-            st.image(get_image_path("3d_clusters_kmeans_2.png"))
-        with col2:
-            st.image(get_image_path("elbow_method_kmeans_2.png"))
-            st.markdown("""
-            **Cluster Analysis 2:**
-            - optmial amount of clusters: 4
-            """)
-        st.markdown("""
-        **Overall Clustering Insights:**
-        - Cluster 1 (green): Relativly large discount percantage, low review count, reletvaly high ratings. These prouducts are the ones going for a bargin and are at a lower cost tha what they should be.
-        - Cluster 2 (red): Small discount percantages, low review count, high ratings. These prouducts are the prouducts that are priced correctly, and are of good quality.
-        - Cluster 3 (purple): Small discount, low review count, bad ratings. These ar ethe prouducts which are of low quality.
-        - Cluster 4 (blue): Low discount, high review count , high ratings. these prouducts are very poupular, of good quality, and have good ratings.
-        """)  
-
+        **Cluster Analysis 1:**
+        - Optimal number of clusters: 4
+        """)
+    st.markdown("""
+    **Overall Clustering Insights:**
+    - Cluster 1 (green): Very high feqrency, moderate price, reletvaly high ratings. These people are buying prouducts frequently and are with low cost
+    - Cluster 2 (red): Low feqruency, low monatery value, high ratings. These people usualy bought one of things and are happy with them. 
+    - Cluster 3 (purple): Low feqruency, low monatery value, bad ratings. Thes people hav bought one of things and are not happy with the quality of purchas.
+    - Cluster 4 (blue): Modrate feqruency, high monatery value, high ratings. Theese people are buying expensive things and are happy with them.
+    """)
 
 # Footer
 st.markdown("---")
