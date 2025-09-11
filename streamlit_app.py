@@ -68,6 +68,12 @@ if section == "Product Analysis":
         - Weak correlation (0.12) between price and ratings
         - Minimal correlation between discount percentage and other features
         """)
+    st.header("Feture engerning")
+    st.image(get_image_path("Screenshot 2025-09-11 112021.png"))
+    st.markdown("""
+    - New features created: discount_percentage,number, discounted_price_number, acutal_price_number, first catgroy, last catgroy
+    - Fetures edited: catgroy(made the difffrent tags into a list)
+    """)
 
     # Category Clusters
     st.header("Category Clustering Analysis")
@@ -88,6 +94,8 @@ if section == "Product Analysis":
     - Cluster 3 (purple): Small discount, low review count, bad ratings. These ar ethe prouducts which are of low quality. These prouducts should not be recomended to coustomers. 
     - Cluster 4 (blue): Low discount, high review count , high ratings. these prouducts are very poupular, of good quality, and have good ratings. These prouducts should be paired with each other to gain more sales.
     """)
+    st.header("Clusters addde to the main dataframe")
+    st.image(get_image_path("Screenshot 2025-09-11 112354.png"))
 
 else:  # Customer Analysis
     # Rating Analysis
@@ -115,6 +123,12 @@ else:  # Customer Analysis
         - Ratings are more influenced by product quality than price cuts
         - Price cuts happen to lower rated prouducts shown with most prouducts under a 3 rating having a higher discount percentage
         """)
+    st.header("Feture engerning")
+    st.image(get_image_path("Screenshot 2025-09-11 112957.png"))
+    st.markdown("""
+    - New features created: review count indivudal, average_rating_indivudal, fequrency, monetary value
+    - Fetures edited: user_id, review_id, review_title, review_content(made the difffrent tags into a list, and then made indivudal coloums for everyone)
+    """)
 
     # Rating Clusters
     st.header("Customer Behavior Clustering")
@@ -135,6 +149,8 @@ else:  # Customer Analysis
     - Cluster 3 (purple): Low feqruency, low monatery value, bad ratings. Thes people hav bought one of things and are not happy with the quality of purchas.These people should be targeted with ads of Bigger brands for better quality. 
     - Cluster 4 (blue): Modrate feqruency, high monatery value, high ratings. Theese people are buying expensive things and are happy with them. These people should be targeted with loyalitiy programs to make them buy more often.
     """)
+    st.header("Clusters addde to the main dataframe")
+    st.image(get_image_path("Screenshot 2025-09-11 113757.png"))
 
 # Footer
 st.markdown("---")
