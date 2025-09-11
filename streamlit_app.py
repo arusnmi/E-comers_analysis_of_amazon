@@ -7,7 +7,13 @@ st.set_page_config(page_title="E-commerce Data Analysis", page_icon="📊", layo
 # Function to get image path
 def get_image_path(image_name):
     base_path = Path(__file__).parent / 'Images'
-    return str(base_path / image_name)
+    full_path = str(base_path / image_name)
+    # Add debug print
+    st.write(f"Trying to load image from: {full_path}")
+    # Check if file exists
+    if not Path(full_path).exists():
+        st.error(f"Image not found: {image_name}")
+    return full_path
 
 # Title and introduction
 st.title("E-commerce Data Analysis Of amazon")
