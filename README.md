@@ -4,12 +4,20 @@
 
 The project scope is to gather insights about the users of Amazon, and find things like customer shopping behaviors, segment customers based on their buying patterns, and identify relationships between products. 
 
+The tasks that need to be done for the analysis:
+
+1. Data preprocessing: taking the raw data extracted from a paage, and either drop the NA coloumns, or handel the data
+2. feture engenering: creating fetures like fequrencey, monarart value, as well as taking exsiting coloums and converiing the data type, for example taking thr price values and converting them to floats.
+3. EDA: create visualizationa and analyse the data to gather insights
+4. Rule mining: genartte ascoations to find patterens
+5. Clustering: use k-means clusters to find patterens
+6. Gather insights: analyse the information and gather insights 
 # Data preprocessing 
 
 Methods used:
 
 1. dropNA: dropped all the values
-2. Feature engineering: frequency, monetary value etc.
+2. Outlier Handeling
 
 # Visualizations:
 
